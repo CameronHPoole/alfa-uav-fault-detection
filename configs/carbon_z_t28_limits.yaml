@@ -1,0 +1,21 @@
+platform: "Carbon Z T-28"
+base_clock_hz: 50.0
+trim_initial_seconds: 10.0
+
+requirements:
+  REQ-FDI-002:
+    description: "Detect full engine failure within 1.5s of onset with zero false alarms."
+    fault_type: "engines"
+    max_detection_latency_s: 1.5
+    allow_false_positives: false
+  REQ-FDI-003:
+    description: "Detect stuck primary control surface within 1.0s of onset."
+    fault_type: "control_surface"
+    max_detection_latency_s: 1.0
+    allow_false_positives: false
+
+detector_thresholds:
+  roll_err_rms_deg: 8.0
+  pitch_err_rms_deg: 6.0
+  yaw_err_rms_deg: 10.0
+  airspeed_err_rms_mps: 3.5
