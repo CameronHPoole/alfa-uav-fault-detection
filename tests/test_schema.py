@@ -7,7 +7,7 @@ from alfa_workbench.schema import DetectorThresholds, load_config
 
 
 def test_load_carbon_z_config() -> None:
-    config_path = Path("configs/carbon_z_limits.yaml")
+    config_path = Path("configs/carbon_z_t28_limits.yaml")
     cfg = load_config(config_path)
 
     assert cfg.platform == "Carbon Z T-28"
