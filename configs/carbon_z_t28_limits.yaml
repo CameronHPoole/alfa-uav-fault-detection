@@ -14,6 +14,7 @@ requirements:
     max_detection_latency_s: 1.0
     allow_false_positives: false
 
+# TODO redefine from sysmlv2 model
 detector_thresholds:
   roll_err_rms_deg: 8.0
   pitch_err_rms_deg: 6.0
