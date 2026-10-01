@@ -1,22 +1,13 @@
-# Virtual environment & Python cache
-.venv/
-__pycache__/
-*.py[cod]
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-build/
-dist/
-
 # Dataset files
 data/*
 !data/.gitkeep
 
-# # OS / IDE files
-# .DS_Store
-# .vscode/
-# .idea/
+# Testing
+*.pyc
+
+# VSCode
+.vscode/settings.json
 
 # Other
-
+build/*
+*.egg-info
