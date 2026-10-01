@@ -1,9 +1,10 @@
+"""Tests for the SequenceLoader module."""
 from pathlib import Path
-import pandas as pd
 from alfa_workbench.loader import SequenceLoader
 
 
 def test_load_telemetry_merges_causally(tmp_path: Path) -> None:
+    """Test that telemetry data merges causally without interpolation."""
     # ---- Testing DF merging ----
     prefix = "flight_01"
 
@@ -40,6 +41,7 @@ def test_load_telemetry_merges_causally(tmp_path: Path) -> None:
 
 
 def test_missing_roll_degrades_gracefully(tmp_path: Path) -> None:
+    """Test that missing roll data is handled gracefully."""
     # ---- Testing graceful degredation ----
     prefix = "flight_02"
 
@@ -50,7 +52,7 @@ def test_missing_roll_degrades_gracefully(tmp_path: Path) -> None:
         "0e8,-9.8\n"
         "1e8,-9.8\n"
     )
-    
+
     # Notice we intentionally DO NOT create the roll_csv file
 
     loader = SequenceLoader(tmp_path, prefix)
@@ -64,7 +66,7 @@ def test_missing_roll_degrades_gracefully(tmp_path: Path) -> None:
     assert len(df) == 2
     assert "timestamp_s" in df.columns
     assert "flight_time_s" in df.columns
-    
+
     # But it should safely omit the roll columns without crashing
     assert "roll_cmd" not in df.columns
     assert "roll_meas" not in df.columns

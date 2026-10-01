@@ -1,8 +1,11 @@
+"""Loader module for ALFA UAV telemetry data."""
 from pathlib import Path
 import pandas as pd
 
 
 class SequenceLoader:
+    """Loads and merges telemetry data from ALFA CSV files."""
+
     def __init__(self, sequence_dir: str | Path, prefix: str):
         self.sequence_dir = Path(sequence_dir)
         self.prefix = prefix
