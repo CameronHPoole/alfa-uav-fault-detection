@@ -3,6 +3,16 @@ import pandas as pd
 
 
 class SequenceLoader:
+    """A class for loading flight sequences.
+
+    This class performs two primary pre-processing steps.
+    
+    1. Standardize timestamps: from nanoseconds -> seconds from t_0
+    2. Handling asynchronous clocks: use IMU as master clock, then merge_asofdirection="backward")
+
+    Attributes:
+        None | TBD
+    """
     def __init__(self, sequence_dir: str | Path, prefix: str):
         self.sequence_dir = Path(sequence_dir)
         self.prefix = prefix
