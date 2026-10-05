@@ -68,3 +68,6 @@ def test_missing_roll_degrades_gracefully(tmp_path: Path) -> None:
     # But it should safely omit the roll columns without crashing
     assert "roll_cmd" not in df.columns
     assert "roll_meas" not in df.columns
+
+def test_ground_truth_fault_time(tmp_path: Path) -> None:
+    pass

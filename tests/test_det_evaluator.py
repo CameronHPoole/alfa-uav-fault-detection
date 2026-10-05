@@ -1,5 +1,5 @@
 import pandas as pd
-from alfa_workbench.det_evaluator import failure_detector
+from alfa_workbench.det_evaluator import fault_detector
 
 def test_evaluate_successful_detection() -> None:
     # Fault happens at t=2.0s. Alarm crosses threshold (10.0) at t=2.5s.
@@ -8,7 +8,7 @@ def test_evaluate_successful_detection() -> None:
         "roll_err_rms":  [1.0, 3.0, 11.0, 15.0]
     })
     
-    result = failure_detector(df, threshold_deg=8.0, t_fault=2.0)
+    result = fault_detector(df, threshold_deg=8.0, t_fault=2.0)
     print("\n--- SANITY CHECK: Result Dict ---")
     print(result)
     print("---------------------------------------")
@@ -24,7 +24,7 @@ def test_evaluate_false_positive_gust() -> None:
         "roll_err_rms":  [9.0, 2.0, 2.0, 15.0]
     })
     
-    result = failure_detector(df, threshold_deg=8.0, t_fault=4.0)
+    result = fault_detector(df, threshold_deg=8.0, t_fault=4.0)
     
     # The detector failed because it cried wolf at t=1.0s
     assert result["fp"] is True
@@ -38,7 +38,7 @@ def test_evaluate_nominal_flight() -> None:
         "roll_err_rms":  [1.0, 2.0, 1.5]
     })
     
-    result = failure_detector(df, threshold_deg=8.0, t_fault=None)
+    result = fault_detector(df, threshold_deg=8.0, t_fault=None)
     
     assert result["fp"] is False
     assert result["fn"] is False

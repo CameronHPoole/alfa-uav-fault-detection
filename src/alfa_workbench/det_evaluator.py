@@ -1,6 +1,6 @@
 import pandas as pd
 
-def failure_detector(df: pd.DataFrame, threshold_deg: float, t_fault: float | None) -> dict:
+def fault_detector(df: pd.DataFrame, threshold_deg: float, t_fault: float | None, trim_time = 10.0) -> dict:
     """
     Deterministic fault detector utilizing a fixed threshold
 
@@ -8,15 +8,20 @@ def failure_detector(df: pd.DataFrame, threshold_deg: float, t_fault: float | No
         df (pd.DataFrame): flight dataframe
         threshold_deg (float): fixed threshold in degrees
         t_fault (float | None): ground truth time a failure occured
+        trim_time = 10: Amount of time (s) to trim for transient takeoff to remove FP's
 
     Returns:
         Dict: {tp, fp, fn, latency_s}
     """
+    # Trim transient startup time
+    t_0 = df["timestamp_s"].iloc[0]
+    valid_df = df[df["timestamp_s"] - t_0 >= trim_time]
+
     # RMS threshold
-    alarms = df[df["roll_err_rms"] > threshold_deg]
+    alarms = valid_df[valid_df["roll_err_rms"] > threshold_deg]
 
     # save first index occurance of an alarm
-    t_pred = alarms["timestamp_s"].iloc[0] if not alarms.empty else None
+    t_pred = alarms["flight_time_s"].iloc[0] if not alarms.empty else None
     num_alarms = alarms.size
 
     print(f"Number of alarms: {num_alarms}")
@@ -46,5 +51,5 @@ def failure_detector(df: pd.DataFrame, threshold_deg: float, t_fault: float | No
         "tp": bool(latency_s >= 0),
         "fp": bool(not latency_s >= 0),
         "fn": False,
-        "latency_s": None if not latency_s >= 0 else latency_s, 
+        "latency_s": latency_s, # "latency_s": None if not latency_s >= 0 else latency_s, 
     }
