@@ -1,9 +1,9 @@
 import argparse
 from pathlib import Path
 
-from src.alfa_workbench.loader import SequenceLoader
-from src.alfa_workbench.residuals import compute_gnc_residials
-from src.alfa_workbench.det_evaluator import fault_detector
+from alfa_workbench.loader import SequenceLoader
+from alfa_workbench.residuals import compute_gnc_residials
+from alfa_workbench.det_evaluator import fault_detector
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run FDI on an ALFA sequence.")
@@ -21,11 +21,16 @@ def main() -> None:
     t_fault = loader.get_ground_truth_fault_time("aileron") # Naive to only aileron faults
 
     # 2. Compute features
-    df = compute_gnc_residials(df)
+    df = compute_gnc_residials(df, window=25, cusum_drift=3.0)
 
     # 3. Evaluate requirements
-    static_threshold = 20.0
-    result = fault_detector(df, threshold_deg=static_threshold, t_fault=t_fault)
+    static_threshold = 150.0
+    result = fault_detector(
+        df,
+        threshold_deg=static_threshold,
+        t_fault=t_fault,
+        feature_col="roll_err_cusum"
+    )
 
     # 4. Print analysis
     print(f"\nGround Truth Fault Time: {t_fault:.2f} seconds" if t_fault else "Nominal Flight")

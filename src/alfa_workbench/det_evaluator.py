@@ -1,6 +1,11 @@
 import pandas as pd
 
-def fault_detector(df: pd.DataFrame, threshold_deg: float, t_fault: float | None, trim_time = 10.0) -> dict:
+def fault_detector(
+        df: pd.DataFrame, 
+        threshold_deg: float, 
+        t_fault: float | None, 
+        trim_time = 10.0,
+        feature_col: str = "roll_err_rms") -> dict:
     """
     Deterministic fault detector utilizing a fixed threshold
 
@@ -18,7 +23,7 @@ def fault_detector(df: pd.DataFrame, threshold_deg: float, t_fault: float | None
     valid_df = df[df["timestamp_s"] - t_0 >= trim_time]
 
     # RMS threshold
-    alarms = valid_df[valid_df["roll_err_rms"] > threshold_deg]
+    alarms = valid_df[valid_df[feature_col] > threshold_deg]
 
     # save first index occurance of an alarm
     t_pred = alarms["flight_time_s"].iloc[0] if not alarms.empty else None
