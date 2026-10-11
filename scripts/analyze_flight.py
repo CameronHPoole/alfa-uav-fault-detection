@@ -1,9 +1,9 @@
 import argparse
 from pathlib import Path
 
-from alfa_workbench.loader import SequenceLoader
-from alfa_workbench.residuals import compute_gnc_residials
-from alfa_workbench.det_evaluator import fault_detector
+from src.alfa_workbench.loader import SequenceLoader
+from src.alfa_workbench.residuals import compute_gnc_residials
+from src.alfa_workbench.detector import fault_detector
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run FDI on an ALFA sequence.")

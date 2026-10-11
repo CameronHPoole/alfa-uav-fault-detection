@@ -21,6 +21,8 @@ def compute_gnc_residials(
 
     out = df.copy()
 
+    
+
     if "roll_cmd" in out.columns and "roll_meas" in out.columns:
         out["roll_err"] = out["roll_cmd"] - out["roll_meas"]
 

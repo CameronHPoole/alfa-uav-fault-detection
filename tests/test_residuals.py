@@ -1,7 +1,9 @@
+"""Tests for residual computation behavior."""
+
 import pandas as pd
 import numpy as np
 
-from alfa_workbench.residuals import compute_gnc_residials
+from src.alfa_workbench.residuals import compute_gnc_residials
 
 def test_compute_gnc_residuals_smoothing() -> None:
     """
