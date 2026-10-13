@@ -4,7 +4,9 @@ import numpy as np
 def compute_gnc_residials(
         df: pd.DataFrame, 
         window: int = 25, 
-        cusum_drift = 5.0) -> pd.DataFrame:
+        cusum_drift = 5.0,
+        trim_samples = 5 * 50 # 5 sec @ 50hz        
+    ) -> pd.DataFrame:
     """
     Computes tracking residuals and a causal rolling RMS.
     At 50 Hz, window = 25 equals a 0.5 second smoothing window.
@@ -21,8 +23,6 @@ def compute_gnc_residials(
 
     out = df.copy()
 
-    
-
     if "roll_cmd" in out.columns and "roll_meas" in out.columns:
         out["roll_err"] = out["roll_cmd"] - out["roll_meas"]
 
@@ -33,8 +33,16 @@ def compute_gnc_residials(
             .mean()
             )
 
+        # Washout Filter (remove steady state corrections from cusum)
+        steady_state_error = out["roll_err"].rolling(
+            window=trim_samples,
+            min_periods=1
+        ).mean()
+
+        centered_error = out["roll_err"] - steady_state_error
+
         # Page's CUSUM Filter
-        abs_err = np.abs(out["roll_err"].values)
+        abs_err = np.abs(centered_error.values)
         cusum = np.zeros(len(abs_err))
         
         for i in range(1, len(abs_err)):
