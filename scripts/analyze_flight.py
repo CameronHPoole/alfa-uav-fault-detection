@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 from alfa_workbench.loader import SequenceLoader
-from alfa_workbench.residuals import compute_gnc_residials
+from alfa_workbench.residuals import compute_gnc_residuals
 from alfa_workbench.detector import fault_detector
 
 def main() -> None:
@@ -21,7 +21,7 @@ def main() -> None:
     t_fault = loader.get_ground_truth_fault_time("aileron") # Naive to only aileron faults
 
     # 2. Compute features
-    df = compute_gnc_residials(df, window=25, cusum_drift=4.0)
+    df = compute_gnc_residuals(df, window=25, cusum_drift=10.0)
 
     # 3. Evaluate requirements
     static_threshold = 150.0

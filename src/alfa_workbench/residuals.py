@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def compute_gnc_residials(
+def compute_gnc_residuals(
         df: pd.DataFrame, 
         window: int = 25, 
         cusum_drift = 5.0,
